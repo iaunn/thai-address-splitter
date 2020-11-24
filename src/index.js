@@ -69,14 +69,15 @@ const findSubdistrict = (wordlist) => {
         });
         results = results.concat(filtered);
     }
-
-    const bestMatched = findBestMatched(results).name.split(', ');
-
+    const _bestMatch = findBestMatched(results)
+    const bestMatched = _bestMatch.name.split(', ');
     return {
         subdistrict: bestMatched[0],
         district: removePrefix(bestMatched[1]),
         province: removePrefix(bestMatched[2]),
-        zipcode: bestMatched[3]
+        zipcode: bestMatched[3],
+        latitude: +_bestMatch.value.lat,
+        longitude: +_bestMatch.value.lon
     };
 };
 
@@ -87,7 +88,8 @@ const findBestMatched = (filtered) => {
         if (!res[value.name]) {
             res[value.name] = {
                 count: 0,
-                name: value.name
+                name: value.name,
+                value: value
             };
             results.push(res[value.name])
         }
